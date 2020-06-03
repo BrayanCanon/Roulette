@@ -9,12 +9,12 @@ namespace TheRoulette
     {
         public int id { get; set; }
         public string state { get; set; }
-        List<Bet> bets { get; set; }
+        public List<Bet> bets { get; set; }
 
         public Roulette()
         {
             id = 0;
-            state = "Inactive";
+            state = "Active";
             bets = new List<Bet>();
         }
 
@@ -29,13 +29,19 @@ namespace TheRoulette
             state = "Active";
         }
 
-        public void theBet(Bet pBet)
+        public void theBets(Bet pBet)
         {
             if (state.Equals("Active"))
             {
-                Bet tnew = pBet;
-
-                bets.Add(tnew);
+                if (pBet.amount % 2 == 0)
+                {
+                    pBet.result = "Win";
+                }
+                else
+                {
+                    pBet.result = "Lose";
+                }
+                bets.Add(pBet);
             }
         }
 
