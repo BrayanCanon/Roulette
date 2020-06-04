@@ -5,6 +5,7 @@ using System.Web;
 
 namespace TheRoulette
 {
+    [Serializable]
     public class Bet
     {
         public int bettor { get; set; }
@@ -12,7 +13,6 @@ namespace TheRoulette
         public string result { get; set; }
         public string color { get; set; }
         public int number { get; set; }
-
         public Bet()
         {
             this.bettor = -1;

@@ -19,12 +19,6 @@ namespace TheRoulette
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
-            //config.Routes.MapHttpRoute(
-            //    name: "myApi",
-            //    routeTemplate: "Roulette/{controller}/{id}",
-            //    defaults: new { id = RouteParameter.Optional }
-            //);
         }
     }
 }

@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Memory;
+using ServiceStack.Redis;
+using StackExchange.Redis;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.Configuration;
+using System.Web;
+using System.Web.Configuration;
 using System.Web.Http;
-using TheRoulette;
+using System.Web.Mvc;
 
 namespace TheRoulette.Controllers
 {
@@ -13,36 +15,9 @@ namespace TheRoulette.Controllers
     {
         private List<Roulette> roulettes = new List<Roulette>();
 
-        public void iniciarRuleta()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                Roulette newRoulette = new Roulette();
-                newRoulette.id = i;
-                newRoulette.state = "Active";
-
-                Bet myBet = new Bet();
-                myBet.amount = 1000;
-                myBet.bettor = i;
-                myBet.number = 6;
-                myBet.result = "Win";
-
-                Bet myBet2 = new Bet();
-                myBet2.amount = 2000;
-                myBet2.bettor = i + 1;
-                myBet2.number = 16;
-                myBet2.result = "Lose";
-
-                newRoulette.bets.Add(myBet);
-                newRoulette.bets.Add(myBet2);
-                roulettes.Add(newRoulette);
-            }
-        }
-
         // GET api/values
         public int createNewRoulette()
         {
-            iniciarRuleta();
             Roulette newRoulette = new Roulette();
             newRoulette.createRoulette(roulettes.Count + 1);
             newRoulette.id = roulettes.Count + 1;
@@ -51,12 +26,9 @@ namespace TheRoulette.Controllers
             return newRoulette.id;
         }
 
-        
-
         // GET api/values/5
         public string rouletteOpening(int id)
         {
-            iniciarRuleta();
             Roulette currentRoulette = null;
             string result = "Denied";
             foreach (Roulette r in roulettes)
@@ -71,9 +43,8 @@ namespace TheRoulette.Controllers
             return result;
         }
 
-
         // PUT api/values/5
-        public IHttpActionResult createTheBet(int id, Models.Request.BetJSON bet)
+        public IHttpActionResult createNewBet(int id, Models.Request.BetJSON bet)
         {
             Bet newBet = new Bet();
             newBet.bettor = id;
@@ -81,8 +52,6 @@ namespace TheRoulette.Controllers
             newBet.result = bet.result;
             newBet.color = bet.color;
             newBet.number = bet.number;
-
-            iniciarRuleta();
 
             foreach (Roulette r in roulettes)
             {
@@ -95,13 +64,11 @@ namespace TheRoulette.Controllers
                     }
                 }
             }
-            return Ok(roulettes[0]);
+            return Ok();
         }
 
-
-        public List<String> closeBet(int id)
+        public List<String> closeBetsByID(int id)
         {
-            iniciarRuleta();
             List<String> results = new List<String>();
             foreach (Roulette r in roulettes)
             {
@@ -116,10 +83,9 @@ namespace TheRoulette.Controllers
             return results;
         }
 
-        public List<String> getRoulettesState()
+        public List<String> roulettesState()
         {
             List<String> ruletteState = new List<String>();
-            iniciarRuleta();
             for (int i = 0; i<roulettes.Count; i++)
             {
                 ruletteState.Add("Roulette "+i+": "+roulettes[i].state);

@@ -5,6 +5,7 @@ using System.Web;
 
 namespace TheRoulette
 {
+    [Serializable]
     public class Roulette
     {
         public int id { get; set; }
@@ -44,6 +45,5 @@ namespace TheRoulette
                 bets.Add(pBet);
             }
         }
-
     }
 }
