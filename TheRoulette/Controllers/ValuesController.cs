@@ -15,7 +15,6 @@ namespace TheRoulette.Controllers
     {
         private List<Roulette> roulettes = new List<Roulette>();
 
-        // GET api/values
         public int createNewRoulette()
         {
             Roulette newRoulette = new Roulette();
@@ -26,7 +25,6 @@ namespace TheRoulette.Controllers
             return newRoulette.id;
         }
 
-        // GET api/values/5
         public string rouletteOpening(int id)
         {
             Roulette currentRoulette = null;
@@ -43,7 +41,6 @@ namespace TheRoulette.Controllers
             return result;
         }
 
-        // PUT api/values/5
         public IHttpActionResult createNewBet(int id, Models.Request.BetJSON bet)
         {
             Bet newBet = new Bet();
